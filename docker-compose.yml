@@ -1,0 +1,40 @@
+---
+version: '3.2'
+services:
+  fluentd:
+    build: custom-fluentd
+    depends_on:
+      - mariadb
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      - webnet
+    volumes:
+      - $PWD/custom-fluentd/fluent.conf:/fluentd/etc/fluent.conf:ro
+      - type: volume
+        source: mysql-logs
+        target: /var/log/mysql
+        volume:
+          nocopy: true
+  mariadb:
+    image: mariadb:10.3.7
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=changeme
+    command: --slow-query-log=1 --log-bin --log-output=TABLE
+    volumes:
+      - type: volume
+        source: mysql-logs
+        target: /var/log/mysql
+        volume:
+          nocopy: true
+
+    networks:
+      - webnet
+networks:
+  webnet:
+
+volumes:
+  mysql-logs:
