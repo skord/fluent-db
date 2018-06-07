@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    mysql2 (0.5.1)
+    sequel (5.9.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mysql2
+  sequel
+
+BUNDLED WITH
+   1.16.2
